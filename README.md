@@ -1,43 +1,40 @@
-Usage: `node bmpInspect.js file.bmp file.json`
-where file.bmp is the path of the file to load and
-file.json is the path of the file to save to.
+# Usage:
 
-Input:
+`node bmpInspect.js file.bmp`
+
+where file.bmp is the path of the file to load. The JSON output will be saved to file.json, overwriting it if it already exists.
+
+# Input:
+
 This program is compatibile with .bmp files
-exported by GIMP with default settings (24bit)
+exported by GIMP with default settings (24bit/ no alpha channel). Byte offsets and other information about the spec can be found at [Wikipedia: BMP file format](https://en.wikipedia.org/wiki/BMP_file_format).
 
-The following byte offsets are assumed:
-10: the offset of start of the pixel array (4 bytes)
-18: width (4 bytes)
-22: height (4 bytes)
+# Output:
 
-The order of the pixels is left to right, bottom row to top
-Each pixel is 3 bytes
-There are bytes padding the end of each row of
-pixels such that the byte length of the row is a multiple of 4
-The order of the bytes is blue, green, red.
+```shell
+node bmpToJson.js square.bmp
+```
 
-Output:
-The JSON output is structured like so:
+The JSON output (square.json) is structured like so:
+
+```JSON
 {
-"name": "leaf3",
-"width": 32,
-"height": 32,
-"palette": [
-"ffffff",
-"000000"
-],
-"pixels": [
-[0, 0, 0],
-[1, 1, 1]  
- ]
+  "name": "square",
+  "width": 3,
+  "height": 3,
+  "palette": [
+    "0000ff",
+    "00ff00",
+    "ff0000"
+  ],
+  "pixels": [
+    [0, 0, 0],
+    [1, 1, 1],
+    [2, 2, 2]
+  ]
 }
+```
 
--name is a string taken from the .bmp file name
--width is a number
--height is a number
--palette is a 1-D array of hex strings for all colors in the image
--pixels\[row][col] is a 2-D array of numbers that correspond to the
-colors in palette. for example if pixels\[1][2] has a value of 0,
-it means that the pixel on the second row from the bottom (1), in
-the third column (2) has the color FFFFFF (pixels\[0])
+The image it represents is 3 pixels by 3 pixels in size. The top row is red, the middle row is green, and the bottom row is blue. The value in `pixels[row][col]` is the index of the corresponding color (hex string) in `palette`.
+
+So for example if `palette[3]` has a value of 'FFFFFF', and `pixels[0][4]` has a value of 3, it means that the 5th pixel of the first (bottom) row is white.
