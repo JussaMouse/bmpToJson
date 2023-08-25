@@ -1,6 +1,8 @@
 # Usage:
 
-`node bmpInspect.js file.bmp`
+```shell
+node bmpInspect.js file.bmp
+```
 
 where file.bmp is the path of the file to load. The JSON output will be saved to file.json, overwriting it if it already exists.
 
